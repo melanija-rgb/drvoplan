@@ -5,6 +5,7 @@ const reveals = document.querySelectorAll(".reveal");
 const form = document.querySelector("#contact-form");
 const status = form.querySelector(".form__status");
 const toTop = document.querySelector(".to-top");
+const facts = document.querySelector(".facts");
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function storyProgress() {
@@ -14,9 +15,29 @@ function storyProgress() {
   return scrolled / scrollable;
 }
 
+function intersects(a, b) {
+  return a.right > b.left && a.left < b.right && a.bottom > b.top && a.top < b.bottom;
+}
+
+function factsInView() {
+  if (!facts.classList.contains("is-on")) return false;
+  return intersects(facts.getBoundingClientRect(), {
+    left: 0,
+    top: 0,
+    right: window.innerWidth,
+    bottom: window.innerHeight,
+  });
+}
+
+function coversAControl() {
+  const button = toTop.getBoundingClientRect();
+  return [...form.querySelectorAll("input:not([name=website]), textarea, button")].some((control) => {
+    return intersects(button, control.getBoundingClientRect());
+  });
+}
+
 function paintHouse() {
   header.classList.toggle("is-scrolled", window.scrollY > 8);
-  toTop.classList.toggle("is-on", window.scrollY > window.innerHeight);
 
   const p = storyProgress();
 
@@ -41,6 +62,11 @@ function paintHouse() {
       el.classList.toggle("is-on", p >= Number(el.dataset.at));
     });
   }
+
+  toTop.classList.toggle(
+    "is-on",
+    window.scrollY > window.innerHeight && !factsInView() && !coversAControl(),
+  );
 }
 
 let ticking = false;
@@ -64,6 +90,10 @@ paintHouse();
 
 if (reduce.matches) {
   reveals.forEach((el) => el.classList.add("is-on"));
+  toTop.classList.toggle(
+    "is-on",
+    window.scrollY > window.innerHeight && !factsInView() && !coversAControl(),
+  );
 }
 
 form.addEventListener("submit", async (event) => {
