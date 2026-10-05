@@ -918,20 +918,20 @@ a {
     gap: 0.2rem;
   }
 
-  .header__link {
+  a.link-pill {
     padding: 0.42rem 0.85rem;
     border-radius: 999px;
     background-image: none;
     transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
   }
 
-  .header__link:hover,
-  .header__link:focus-visible {
+  a.link-pill:hover,
+  a.link-pill:focus-visible {
     background-color: rgba(196, 162, 122, 0.18);
     color: #f7f1e6;
   }
 
-  .header__link:focus-visible {
+  a.link-pill:focus-visible {
     outline: 2px solid rgba(196, 162, 122, 0.8);
     outline-offset: 2px;
   }
