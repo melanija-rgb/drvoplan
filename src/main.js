@@ -83,6 +83,33 @@ toTop.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: reduce.matches ? "auto" : "smooth" });
 });
 
+const navToggle = document.querySelector(".nav-toggle");
+const navPanel = document.querySelector("#nav-meni");
+
+function setNav(open) {
+  navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  navPanel.classList.toggle("is-open", open);
+}
+
+navToggle.addEventListener("click", () => {
+  setNav(navToggle.getAttribute("aria-expanded") !== "true");
+});
+
+navPanel.addEventListener("click", (event) => {
+  if (event.target.closest("a")) setNav(false);
+});
+
+document.addEventListener("click", (event) => {
+  if (navToggle.contains(event.target) || navPanel.contains(event.target)) return;
+  setNav(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") setNav(false);
+});
+
+window.matchMedia("(max-width: 800px)").addEventListener("change", () => setNav(false));
+
 window.addEventListener("scroll", requestPaint, { passive: true });
 window.addEventListener("resize", requestPaint);
 reduce.addEventListener("change", requestPaint);
