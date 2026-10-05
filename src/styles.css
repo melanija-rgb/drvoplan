@@ -959,8 +959,15 @@ a {
   }
 
   .to-top {
-    right: 0.9rem;
-    bottom: 4.75rem;
+    right: calc(0.7rem + env(safe-area-inset-right, 0px));
+    bottom: calc(0.55rem + env(safe-area-inset-bottom, 0px));
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  .to-top svg {
+    width: 1rem;
+    height: 1rem;
   }
 }
 
