@@ -6,9 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "INQUIRY_FAST_LIMIT=1 node --test netlify/lib/handlers.test.js"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.2.0"
   },
   "devDependencies": {
+    "netlify-cli": "^23.9.1",
     "vite": "^6.3.5"
   }
 }

@@ -128,21 +128,31 @@
             <p>Pišite nam o modelu DP A-frame 45.</p>
           </header>
 
-          <form class="form" id="contact-form" novalidate>
+          <form class="form" id="contact-form" action="/api/upit" method="post">
             <div class="form__row">
               <label class="field">
                 <span>Ime</span>
-                <input type="text" name="ime" autocomplete="name" required />
+                <input type="text" name="ime" autocomplete="name" required minlength="2" maxlength="80" />
               </label>
               <label class="field">
                 <span>Email</span>
-                <input type="email" name="email" autocomplete="email" required />
+                <input type="email" name="email" autocomplete="email" required maxlength="120" />
               </label>
             </div>
             <label class="field">
-              <span>Poruka</span>
-              <textarea name="poruka" rows="4" required></textarea>
+              <span>Telefon</span>
+              <input type="tel" name="telefon" autocomplete="tel" inputmode="tel" maxlength="40" />
             </label>
+            <label class="field">
+              <span>Poruka</span>
+              <textarea name="poruka" rows="4" required minlength="2" maxlength="4000"></textarea>
+            </label>
+            <div class="hp" aria-hidden="true">
+              <label>
+                Website
+                <input type="text" name="website" tabindex="-1" autocomplete="off" />
+              </label>
+            </div>
             <div class="form__foot">
               <button class="btn btn--primary" type="submit">Pošalji</button>
               <p class="form__status" role="status" aria-live="polite"></p>
