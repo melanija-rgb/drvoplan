@@ -32,15 +32,23 @@
     <header class="header" id="vrh">
       <div class="header__inner">
         <a class="logo" href="#vrh">
-          <img src="/logo-drvoplan.png" alt="" width="132" height="110" />
+          <img class="logo__mark" src="/logo-drvoplan.png" alt="" width="132" height="110" />
+          <img class="logo__lockup" src="/logo-drvoplan-mobile.png" alt="DRVOPLAN, montažni objekti" width="168" height="161" />
           <span class="logo__text">
             <span class="logo__name">DRVOPLAN</span>
             <span class="logo__tag">Montažni objekti</span>
           </span>
         </a>
         <nav class="header__nav" aria-label="Stranica">
-          <a class="header__link link-pill" href="#o-nama">O nama</a>
-          <a class="header__link link-pill" href="#upit">Kontakt</a>
+          <button class="nav-toggle" type="button" aria-label="Meni" aria-expanded="false" aria-controls="nav-meni">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="nav-panel" id="nav-meni">
+            <a class="header__link link-pill" href="#o-nama">O nama</a>
+            <a class="header__link link-pill" href="#upit">Kontakt</a>
+          </div>
         </nav>
       </div>
     </header>
