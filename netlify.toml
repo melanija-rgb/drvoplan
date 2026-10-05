@@ -15,35 +15,9 @@
   port = 8888
   framework = "#custom"
 
-[[redirects]]
-  from = "/api/upit"
-  to = "/.netlify/functions/submit-inquiry"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/admin/prijava"
-  to = "/.netlify/functions/admin-login"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/admin/odjava"
-  to = "/.netlify/functions/admin-logout"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/admin/upiti"
-  to = "/.netlify/functions/admin-inquiries"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/admin/upiti/*"
-  to = "/.netlify/functions/admin-inquiries/:splat"
-  status = 200
-  force = true
+# API routes (/api/upit, /api/admin/*) come from each function's `config.path`.
+# Don't add redirects to /.netlify/functions/<name>: a function with a custom
+# path is not served at that URL, so forced redirects there return a 404.
 
 [[headers]]
   for = "/admin"
