@@ -1,88 +1,64 @@
 const header = document.querySelector(".header");
-const menuBtn = document.querySelector(".menu-btn");
-const panel = document.querySelector(".nav-panel");
-const sections = [...document.querySelectorAll("main section[id]")];
-const navLinks = [...document.querySelectorAll(".nav a, .nav-panel a")];
+const story = document.querySelector(".story");
+const stage = document.querySelector(".story__stage");
+const reveals = document.querySelectorAll(".reveal");
+const form = document.querySelector("#contact-form");
+const status = form.querySelector(".form__status");
+const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-function onScroll() {
+function storyProgress() {
+  const scrollable = story.offsetHeight - window.innerHeight;
+  if (scrollable <= 0) return 0;
+  const scrolled = Math.min(Math.max(-story.getBoundingClientRect().top, 0), scrollable);
+  return scrolled / scrollable;
+}
+
+function paintHouse() {
   header.classList.toggle("is-scrolled", window.scrollY > 8);
 
-  const marker = window.innerHeight * 0.52;
-  let current = "";
-  sections.forEach((section) => {
-    if (section.getBoundingClientRect().top <= marker) current = section.id;
-  });
+  const p = storyProgress();
 
-  navLinks.forEach((link) => {
-    if (current && link.getAttribute("href") === `#${current}`) {
-      link.setAttribute("aria-current", "location");
-    } else {
-      link.removeAttribute("aria-current");
-    }
-  });
+  if (reduce.matches || stage.querySelector("spline-viewer")) {
+    stage.style.removeProperty("--ry");
+    stage.style.removeProperty("--rx");
+    stage.style.removeProperty("--zoom");
+    stage.style.removeProperty("--hint");
+  } else {
+    const narrow = window.innerWidth < 800;
+    const ry = narrow ? -8 + p * 24 : -14 + p * 50;
+    const rx = narrow ? 4 - p * 3 : 8 - p * 7;
+    const zoom = narrow ? 1.26 - p * 0.16 : 1.46 - p * 0.52;
+    stage.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+    stage.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+    stage.style.setProperty("--zoom", `${zoom.toFixed(3)}`);
+    stage.style.setProperty("--hint", Math.max(0, 1 - p * 3.4).toFixed(3));
+  }
+
+  if (!reduce.matches) {
+    reveals.forEach((el) => {
+      el.classList.toggle("is-on", p >= Number(el.dataset.at));
+    });
+  }
 }
 
 let ticking = false;
-window.addEventListener(
-  "scroll",
-  () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      onScroll();
-      ticking = false;
-    });
-  },
-  { passive: true }
-);
-onScroll();
-
-function setMenu(open, returnFocus) {
-  document.body.classList.toggle("nav-open", open);
-  menuBtn.setAttribute("aria-expanded", String(open));
-  panel.inert = !open;
-  if (open) panel.querySelector("a")?.focus();
-  else if (returnFocus) menuBtn.focus();
+function requestPaint() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    paintHouse();
+    ticking = false;
+  });
 }
 
-menuBtn.addEventListener("click", () => {
-  setMenu(!document.body.classList.contains("nav-open"), true);
-});
+window.addEventListener("scroll", requestPaint, { passive: true });
+window.addEventListener("resize", requestPaint);
+reduce.addEventListener("change", requestPaint);
+paintHouse();
 
-panel.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => setMenu(false, false));
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && document.body.classList.contains("nav-open")) {
-    setMenu(false, true);
-  }
-});
-
-const desktop = window.matchMedia("(min-width: 861px)");
-desktop.addEventListener("change", (event) => {
-  if (event.matches) setMenu(false, false);
-});
-
-const revealables = document.querySelectorAll("[data-reveal]");
-if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-in");
-        observer.unobserve(entry.target);
-      });
-    },
-    { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
-  );
-  revealables.forEach((el) => observer.observe(el));
-} else {
-  revealables.forEach((el) => el.classList.add("is-in"));
+if (reduce.matches) {
+  reveals.forEach((el) => el.classList.add("is-on"));
 }
-
-const form = document.querySelector("#contact-form");
-const status = form.querySelector(".form__status");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -90,7 +66,6 @@ form.addEventListener("submit", (event) => {
     form.reportValidity();
     return;
   }
-  // Slanje još nije povezano.
   form.reset();
   status.textContent = "Hvala na poruci.";
 });
