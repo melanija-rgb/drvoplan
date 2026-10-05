@@ -588,15 +588,13 @@ a {
   transition: background-size 0.35s var(--ease);
 }
 
-.about__reach a.link-pill,
-.footer__contact a.link-pill {
+.about__reach a.link-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.42rem;
 }
 
-.about__reach a.link-pill svg,
-.footer__contact a.link-pill svg {
+.about__reach a.link-pill svg {
   width: 1.05rem;
   height: 1.05rem;
   flex: none;
@@ -747,35 +745,18 @@ a {
   background: var(--bg);
 }
 
-.footer__contact {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.15rem;
-  margin: 0;
-  padding-block: 1.35rem 1.2rem;
-}
-
 .footer__base {
   border-top: 1px solid var(--line);
-  padding-block: 0.95rem 1.1rem;
-}
-
-.footer__copy,
-.footer a {
-  color: var(--muted);
-  font-weight: 400;
-  letter-spacing: 0;
-  font-size: 0.92rem;
-}
-
-.footer a {
-  text-decoration: none;
+  padding: 0.95rem var(--pad) 1.1rem;
 }
 
 .footer__copy {
   margin: 0;
-  text-align: center;
+  text-align: left;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 0.92rem;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -783,7 +764,6 @@ a {
     opacity: 0.78;
   }
 
-  .footer a:hover,
   .about__reach a:hover {
     background-size: 100% 1px;
   }
