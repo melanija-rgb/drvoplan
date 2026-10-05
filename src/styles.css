@@ -218,8 +218,8 @@ a {
 
 .story__stage {
   --rx: 6deg;
-  --ry: -14deg;
-  --zoom: 1.46;
+  --ry: -18deg;
+  --zoom: 1.18;
   --hint: 1;
   position: absolute;
   inset: 0;
@@ -228,7 +228,6 @@ a {
   background:
     radial-gradient(ellipse 60% 48% at 58% 46%, rgba(196, 154, 106, 0.18), transparent 70%),
     #141210;
-  perspective: 1800px;
 }
 
 .story__stage::after {
@@ -245,15 +244,17 @@ a {
 .house {
   position: absolute;
   inset: 0;
+  perspective: 1100px;
+  perspective-origin: 50% 42%;
 }
 
 .house__spin {
   width: 100%;
   height: 100%;
   transform: rotateX(var(--rx)) rotateY(var(--ry)) scale(var(--zoom));
-  transform-origin: 58% 46%;
-  transform-style: preserve-3d;
-  box-shadow: 0 36px 80px rgba(0, 0, 0, 0.38);
+  transform-origin: 50% 46%;
+  outline: 1px solid rgba(244, 240, 232, 0.22);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
   will-change: transform;
 }
 

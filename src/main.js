@@ -25,9 +25,9 @@ function paintHouse() {
     stage.style.removeProperty("--hint");
   } else {
     const narrow = window.innerWidth < 800;
-    const ry = narrow ? -8 + p * 24 : -14 + p * 50;
-    const rx = narrow ? 4 - p * 3 : 8 - p * 7;
-    const zoom = narrow ? 1.26 - p * 0.16 : 1.46 - p * 0.52;
+    const ry = narrow ? -10 + p * 36 : -18 + p * 56;
+    const rx = narrow ? 3 - p * 1 : 6 - p * 3;
+    const zoom = narrow ? 1.2 - p * 0.28 : 1.18 - p * 0.42;
     stage.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
     stage.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
     stage.style.setProperty("--zoom", `${zoom.toFixed(3)}`);
