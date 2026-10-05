@@ -4,6 +4,7 @@ const stage = document.querySelector(".story__stage");
 const reveals = document.querySelectorAll(".reveal");
 const form = document.querySelector("#contact-form");
 const status = form.querySelector(".form__status");
+const toTop = document.querySelector(".to-top");
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 function storyProgress() {
@@ -15,6 +16,7 @@ function storyProgress() {
 
 function paintHouse() {
   header.classList.toggle("is-scrolled", window.scrollY > 8);
+  toTop.classList.toggle("is-on", window.scrollY > window.innerHeight);
 
   const p = storyProgress();
 
@@ -50,6 +52,10 @@ function requestPaint() {
     ticking = false;
   });
 }
+
+toTop.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: reduce.matches ? "auto" : "smooth" });
+});
 
 window.addEventListener("scroll", requestPaint, { passive: true });
 window.addEventListener("resize", requestPaint);
