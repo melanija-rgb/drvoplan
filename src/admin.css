@@ -1,0 +1,235 @@
+:root {
+  --bg: #141210;
+  --ink: #f4f0e8;
+  --muted: #b7afa4;
+  --line: rgba(244, 240, 232, 0.14);
+  --accent: #c4a27a;
+  --sans: "Instrument Sans", "Segoe UI", sans-serif;
+  --serif: "Instrument Serif", "Iowan Old Style", Palatino, serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--sans);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 0%, rgba(196, 154, 106, 0.14), transparent 70%),
+    var(--bg);
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(920px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.2rem 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand img {
+  width: 56px;
+  height: auto;
+}
+
+.brand strong {
+  display: block;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+}
+
+.brand small {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+}
+
+main {
+  width: min(920px, calc(100% - 2rem));
+  margin: 0 auto 4rem;
+}
+
+.panel h1 {
+  font-weight: 500;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+
+.lead,
+.count,
+.status {
+  color: var(--muted);
+}
+
+.lead {
+  margin: 0.8rem 0 1.6rem;
+}
+
+form,
+.card {
+  display: grid;
+  gap: 0.9rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--muted);
+}
+
+input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(244, 240, 232, 0.28);
+  border-radius: 0;
+  padding: 0.7rem 0;
+}
+
+input:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+
+.btn,
+.text-btn,
+.ghost {
+  min-height: 44px;
+  border: 1px solid transparent;
+  background: var(--ink);
+  color: #16130f;
+  padding: 0.65rem 1rem;
+}
+
+.text-btn,
+.ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: rgba(244, 240, 232, 0.28);
+}
+
+.lista__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+#upiti {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.card {
+  padding: 1.1rem 1.15rem 1rem;
+  border: 1px solid var(--line);
+  background: rgba(20, 18, 16, 0.72);
+}
+
+.card.is-new {
+  border-left: 3px solid var(--accent);
+}
+
+.card header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.when {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.badge {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--accent);
+}
+
+.who {
+  font-size: 1.25rem;
+  letter-spacing: -0.03em;
+}
+
+.card a {
+  color: var(--accent);
+}
+
+.msg {
+  white-space: pre-wrap;
+}
+
+.actions,
+.confirm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.empty {
+  color: var(--muted);
+  padding: 1rem 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    background: var(--accent);
+  }
+
+  .text-btn:hover,
+  .ghost:hover {
+    border-color: var(--ink);
+  }
+}

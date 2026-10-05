@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="sr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#141210" />
+    <title>Admin — DRVOPLAN</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/admin.css" />
+  </head>
+  <body>
+    <header class="top">
+      <a class="brand" href="/">
+        <img src="/logo.svg" alt="" width="62" height="38" />
+        <span>
+          <strong>DRVOPLAN</strong>
+          <small>Montažni objekti</small>
+        </span>
+      </a>
+      <button class="text-btn" id="odjava" type="button" hidden>Odjava</button>
+    </header>
+
+    <main>
+      <section class="panel" id="prijava" aria-labelledby="prijava-naslov">
+        <h1 id="prijava-naslov">Prijava</h1>
+        <p class="lead">Unesite lozinku za pregled upita.</p>
+        <form id="prijava-forma">
+          <label>
+            Lozinka
+            <input type="password" name="lozinka" autocomplete="current-password" required />
+          </label>
+          <button class="btn" type="submit">Prijavi se</button>
+          <p class="status" id="prijava-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="panel" id="lista" hidden aria-labelledby="lista-naslov">
+        <div class="lista__head">
+          <h1 id="lista-naslov">Upiti</h1>
+          <p class="count" id="broj"></p>
+        </div>
+        <p class="status" id="lista-status" role="status" aria-live="polite"></p>
+        <div id="upiti"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/src/admin.js"></script>
+  </body>
+</html>

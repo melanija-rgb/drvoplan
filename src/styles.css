@@ -529,6 +529,7 @@ a {
 }
 
 .form {
+  position: relative;
   display: grid;
   gap: 1.35rem;
 }
@@ -588,6 +589,22 @@ a {
   min-height: 1.5em;
   color: var(--accent);
   font-size: 0.95rem;
+}
+
+.form__status.is-error {
+  color: #e0a090;
+}
+
+.hp {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .btn {

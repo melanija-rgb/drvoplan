@@ -60,12 +60,34 @@ if (reduce.matches) {
   reveals.forEach((el) => el.classList.add("is-on"));
 }
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!form.checkValidity()) {
     form.reportValidity();
     return;
   }
-  form.reset();
-  status.textContent = "Hvala na poruci.";
+
+  const button = form.querySelector("button[type=submit]");
+  button.disabled = true;
+  status.classList.remove("is-error");
+  status.textContent = "Šaljem…";
+
+  try {
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: new FormData(form),
+      headers: { accept: "application/json" },
+    });
+    const data = await response.json().catch(() => ({}));
+    status.classList.toggle("is-error", !response.ok);
+    status.textContent = data.poruka || (response.ok
+      ? "Hvala. Upit je poslat."
+      : "Upit nije poslat. Pokušajte ponovo.");
+    if (response.ok) form.reset();
+  } catch {
+    status.classList.add("is-error");
+    status.textContent = "Upit nije poslat. Pokušajte ponovo.";
+  } finally {
+    button.disabled = false;
+  }
 });

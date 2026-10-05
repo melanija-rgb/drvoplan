@@ -4,3 +4,27 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[dev]
+  command = "npm run dev"
+  targetPort = 5173
+  port = 8888
+  framework = "#custom"
+
+# API routes (/api/upit, /api/admin/*) come from each function's `config.path`.
+# Don't add redirects to /.netlify/functions/<name>: a function with a custom
+# path is not served at that URL, so forced redirects there return a 404.
+
+[[headers]]
+  for = "/admin"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/admin.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

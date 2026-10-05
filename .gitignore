@@ -3,3 +3,7 @@ dist
 .netlify
 .DS_Store
 *.local
+.env
+.env.*
+!.env.example
+deno.lock
