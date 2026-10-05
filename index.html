@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="DRVOPLAN — montažni objekti. DP A-frame 45, ključ u ruke."
+      content="DRVOPLAN montažni objekti. DP A-frame 45, ključ u ruke. 45 m² iskoristive površine."
     />
     <meta name="theme-color" content="#141210" />
-    <title>DRVOPLAN — Kuće projektovane za život.</title>
+    <title>DRVOPLAN — DP A-frame 45</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -32,187 +32,103 @@
     <header class="header" id="vrh">
       <div class="header__inner">
         <a class="logo" href="#vrh">
-          <svg viewBox="0 0 36 22" aria-hidden="true">
-            <path d="M1 20.5 L10.5 6.5 L17 20.5" />
-            <path d="M15 20.5 L24 4.5 L35 20.5" />
-          </svg>
-          <span>DRVOPLAN</span>
+          <img src="/logo.svg" alt="" width="78" height="48" />
+          <span class="logo__text">
+            <span class="logo__name">DRVOPLAN</span>
+            <span class="logo__tag">Montažni objekti</span>
+          </span>
         </a>
-
-        <nav class="nav" aria-label="Glavno">
-          <a href="#modeli">Modeli</a>
-          <a href="#prednosti">Prednosti</a>
-          <a href="#galerija">Galerija</a>
-          <a href="#kontakt">Kontakt</a>
-        </nav>
-
-        <button
-          class="menu-btn"
-          type="button"
-          aria-expanded="false"
-          aria-controls="nav-panel"
-          aria-label="Meni"
-        >
-          <span></span>
-          <span></span>
-        </button>
+        <a class="header__link" href="#upit">Kontakt</a>
       </div>
     </header>
 
-    <nav class="nav-panel" id="nav-panel" aria-label="Meni" inert>
-      <a href="#modeli">Modeli</a>
-      <a href="#prednosti">Prednosti</a>
-      <a href="#galerija">Galerija</a>
-      <a href="#kontakt">Kontakt</a>
-    </nav>
-
     <main id="sadrzaj">
-      <section class="hero" aria-labelledby="naslov">
-        <div class="hero__stage" data-reveal>
+      <section class="story" aria-labelledby="naslov">
+        <div class="story__sticky">
           <!--
             SPLINE SLOT (#spline-mount)
             Kasnije ovdje ubaciti web komponentu, npr.
             <spline-viewer url="https://prod.spline.design/VAS_ID/scene.splinecode"></spline-viewer>
             Skriptu dodati u head:
             <script type="module" src="https://unpkg.com/@splinetool/viewer/build/spline-viewer.js"></script>
-            Oznaka i uglovi se sami sakriju čim se spline-viewer nađe unutra.
+            Fotografija se sama sakrije čim se spline-viewer nađe unutra.
           -->
-          <div
-            class="stage"
-            id="spline-mount"
-            data-spline-slot="hero"
-          >
-            <p class="sr-only">
-              Prostor rezervisan za interaktivni 3D model kuće.
-            </p>
-            <div class="stage__mark" aria-hidden="true">
-              <span class="stage__corner stage__corner--tl"></span>
-              <span class="stage__corner stage__corner--tr"></span>
-              <span class="stage__corner stage__corner--bl"></span>
-              <span class="stage__corner stage__corner--br"></span>
-              <p class="stage__label">3D model</p>
+          <div class="story__stage" id="spline-mount" data-spline-slot="hero">
+            <p class="sr-only">Prostor rezervisan za interaktivni 3D model kuće.</p>
+            <div class="house" data-house>
+              <div class="house__spin">
+                <img
+                  src="/images/dp-a-frame-45.jpg"
+                  alt="DP A-frame 45, montažna kuća sa staklenom fasadom, tamnim krovom i drvenom terasom u šumi."
+                  width="568"
+                  height="606"
+                />
+              </div>
             </div>
+            <p class="scroll-hint"><span>Skrolujte</span></p>
           </div>
-        </div>
 
-        <div class="hero__bar">
-          <div class="hero__copy" data-reveal style="--d: 80ms">
-            <h1 id="naslov">DRVOPLAN</h1>
-            <p class="hero__sub">Kuće projektovane za život.</p>
-            <p class="hero__note">
-              Montažne kuće, ključ u ruke — od projekta do useljenja.
-            </p>
-            <div class="hero__actions">
-              <a class="btn btn--primary" href="#modeli">Pogledaj modele</a>
-              <a class="btn btn--ghost" href="#kontakt">Kontakt</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section theme-light" id="modeli" aria-labelledby="modeli-naslov">
-        <div class="wrap">
-          <header class="section-head" data-reveal>
-            <span class="idx">01</span>
-            <h2 id="modeli-naslov">Naši modeli</h2>
-          </header>
-
-          <article class="model" data-reveal>
-            <figure class="model__media">
-              <img
-                src="/images/dp-a-frame-45.jpg"
-                alt="DP A-frame 45, montažna kuća sa staklenom fasadom, tamnim krovom i drvenom terasom."
-                width="568"
-                height="606"
-              />
-            </figure>
-            <div class="model__body">
+          <div class="story__panels">
+            <div class="panel panel--name reveal reveal--left" data-at="0.12">
               <p class="eyebrow">Montažni objekti</p>
-              <h3>DP A-frame 45</h3>
-              <p class="model__tagline">Ključ u ruke.</p>
-              <dl class="specs">
-                <div>
-                  <dt>Površina</dt>
-                  <dd>45 m² iskoristive</dd>
-                </div>
-                <div>
-                  <dt>Prostor</dt>
-                  <dd>Pametno iskorišten</dd>
-                </div>
-                <div>
-                  <dt>Izgradnja i isporuka</dt>
-                  <dd>Po dogovoru</dd>
-                </div>
-              </dl>
+              <h1 id="naslov">DP A-frame 45</h1>
+              <p class="tagline">Ključ u ruke.</p>
             </div>
-          </article>
-        </div>
-      </section>
 
-      <section class="section theme-light section--stone" id="prednosti" aria-labelledby="prednosti-naslov">
-        <div class="wrap">
-          <header class="section-head" data-reveal>
-            <span class="idx">02</span>
-            <h2 id="prednosti-naslov">Prednosti</h2>
-          </header>
+            <ol class="features panel panel--features">
+              <li class="reveal reveal--right" data-at="0.28">
+                <p class="features__title">Moderan dizajn</p>
+                <p>A-frame arhitektura koja spaja estetiku i funkcionalnost.</p>
+              </li>
+              <li class="reveal reveal--right" data-at="0.4">
+                <p class="features__title">Ključ u ruke</p>
+                <p>Kompletna usluga od projekta do useljenja.</p>
+              </li>
+              <li class="reveal reveal--right" data-at="0.52">
+                <p class="features__title">Prirodni materijali</p>
+                <p>Kvalitetna gradnja za dugotrajnost i udoban boravak.</p>
+              </li>
+              <li class="reveal reveal--right" data-at="0.64">
+                <p class="features__title">Energetska efikasnost</p>
+                <p>Savremeni sistemi za nisku potrošnju i maksimalnu udobnost.</p>
+              </li>
+            </ol>
 
-          <ul class="advantages" data-reveal>
-            <li class="advantage">
-              <span class="advantage__index">01</span>
-              <h3>Moderan dizajn</h3>
-              <p>A-frame arhitektura koja spaja estetiku i funkcionalnost.</p>
-            </li>
-            <li class="advantage">
-              <span class="advantage__index">02</span>
-              <h3>Ključ u ruke</h3>
-              <p>Kompletna usluga od projekta do useljenja.</p>
-            </li>
-            <li class="advantage">
-              <span class="advantage__index">03</span>
-              <h3>Prirodni materijali</h3>
-              <p>Kvalitetna gradnja za dugotrajnost i udoban boravak.</p>
-            </li>
-            <li class="advantage">
-              <span class="advantage__index">04</span>
-              <h3>Energetska efikasnost</h3>
-              <p>Savremeni sistemi za nisku potrošnju i maksimalnu udobnost.</p>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="section theme-light" id="galerija" aria-labelledby="galerija-naslov">
-        <div class="wrap">
-          <header class="section-head" data-reveal>
-            <span class="idx">03</span>
-            <h2 id="galerija-naslov">Galerija</h2>
-          </header>
-
-          <!-- Nove fotografije dodaju se kao još jedan <figure>. -->
-          <figure class="gallery__plate" data-reveal>
-            <div class="gallery__media">
-              <img
-                src="/images/dp-a-frame-45.jpg"
-                alt="DP A-frame 45 u šumskom okruženju, sa terasom i večernjim svjetlom."
-                width="568"
-                height="606"
-                loading="lazy"
-              />
-            </div>
-            <figcaption>DP A-frame 45 — ključ u ruke.</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section class="section section--contact" id="kontakt" aria-labelledby="kontakt-naslov">
-        <div class="wrap contact__grid">
-          <div class="contact__intro" data-reveal>
-            <span class="idx">04</span>
-            <h2 id="kontakt-naslov">Kontakt</h2>
-            <p>Pišite nam o projektu ili modelu koji vas zanima.</p>
+            <dl class="facts panel panel--facts reveal reveal--up" data-at="0.78">
+              <div>
+                <dt class="sr-only">45 m² iskoristive površine</dt>
+                <dd aria-hidden="true">
+                  <strong>45 m²</strong>
+                  <span>Iskoristive površine</span>
+                </dd>
+              </div>
+              <div>
+                <dt class="sr-only">Pametno iskorišten prostor</dt>
+                <dd aria-hidden="true">
+                  <strong>Pametno iskorišten</strong>
+                  <span>Prostor</span>
+                </dd>
+              </div>
+              <div>
+                <dt class="sr-only">Izgradnja i isporuka po dogovoru</dt>
+                <dd aria-hidden="true">
+                  <strong>Izgradnja i isporuka</strong>
+                  <span>Po dogovoru</span>
+                </dd>
+              </div>
+            </dl>
           </div>
+        </div>
+      </section>
 
-          <form class="form" id="contact-form" data-reveal novalidate>
+      <section class="inquiry" id="upit" aria-labelledby="upit-naslov">
+        <div class="inquiry__inner">
+          <header class="inquiry__intro">
+            <h2 id="upit-naslov">Pošalji upit</h2>
+            <p>Pišite nam o modelu DP A-frame 45.</p>
+          </header>
+
+          <form class="form" id="contact-form" novalidate>
             <div class="form__row">
               <label class="field">
                 <span>Ime</span>
@@ -238,16 +154,11 @@
 
     <footer class="footer">
       <div class="wrap footer__inner">
-        <div>
-          <p class="footer__brand">DRVOPLAN</p>
-          <p class="footer__tag">Montažni objekti</p>
-        </div>
-        <nav class="footer__nav" aria-label="Podnožje">
-          <a href="#modeli">Modeli</a>
-          <a href="#prednosti">Prednosti</a>
-          <a href="#galerija">Galerija</a>
-          <a href="#kontakt">Kontakt</a>
-        </nav>
+        <p class="footer__brand">
+          DRVOPLAN
+          <span>Montažni objekti</span>
+        </p>
+        <a href="#upit">Kontakt</a>
         <p class="footer__copy">© 2026 DRVOPLAN</p>
       </div>
     </footer>
