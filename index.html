@@ -38,7 +38,10 @@
             <span class="logo__tag">Montažni objekti</span>
           </span>
         </a>
-        <a class="header__link" href="#upit">Kontakt</a>
+        <nav class="header__nav" aria-label="Stranica">
+          <a class="header__link" href="#o-nama">O nama</a>
+          <a class="header__link" href="#upit">Kontakt</a>
+        </nav>
       </div>
     </header>
 
@@ -121,6 +124,38 @@
         </div>
       </section>
 
+      <section class="about" id="o-nama" aria-labelledby="o-nama-naslov">
+        <div class="about__inner">
+          <h2 id="o-nama-naslov">O nama</h2>
+          <ul class="about__lines">
+            <li>Montažne kuće | Drvena konstrukcija</li>
+            <li>A-frame &amp; tipski objekti</li>
+            <li>Ključ u ruke gradnja</li>
+          </ul>
+          <p class="about__meta">
+            <span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21s6-5.2 6-10a6 6 0 1 0-12 0c0 4.8 6 10 6 10z" />
+                <circle cx="12" cy="11" r="2.1" />
+              </svg>
+              BiH
+            </span>
+            <span class="about__bar" aria-hidden="true"></span>
+            <span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3.5" y="5.5" width="17" height="13" rx="1.4" />
+                <path d="M4 7l8 6 8-6" />
+              </svg>
+              DM za ponude
+            </span>
+          </p>
+          <p class="about__reach">
+            <a href="tel:+38766674368">066/674-368</a>
+            <a href="mailto:drvoplan@outlook.com">drvoplan@outlook.com</a>
+          </p>
+        </div>
+      </section>
+
       <section class="inquiry" id="upit" aria-labelledby="upit-naslov">
         <div class="inquiry__inner">
           <header class="inquiry__intro">
@@ -168,7 +203,10 @@
           DRVOPLAN
           <span>Montažni objekti</span>
         </p>
-        <a href="#upit">Kontakt</a>
+        <p class="footer__contact">
+          <a href="tel:+38766674368">066/674-368</a>
+          <a href="mailto:drvoplan@outlook.com">drvoplan@outlook.com</a>
+        </p>
         <p class="footer__copy">© 2026 DRVOPLAN</p>
       </div>
     </footer>
