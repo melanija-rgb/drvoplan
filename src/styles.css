@@ -955,6 +955,10 @@ a {
     height: auto;
   }
 
+  .logo__text {
+    gap: 0.2rem;
+  }
+
   .logo__name {
     font-family: "Jost", var(--sans);
     font-weight: 300;
@@ -966,8 +970,8 @@ a {
   }
 
   .logo__tag {
-    font-size: 0.52rem;
-    letter-spacing: 0.26em;
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
     line-height: 1.15;
     white-space: nowrap;
   }
