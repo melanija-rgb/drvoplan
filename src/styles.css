@@ -955,12 +955,25 @@ a {
     height: auto;
   }
 
-  .logo__tag {
-    display: none;
+  .logo__text {
+    gap: 0.2rem;
   }
 
   .logo__name {
+    font-family: "Jost", var(--sans);
+    font-weight: 300;
     font-size: 0.95rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .logo__tag {
+    font-size: 0.58rem;
+    letter-spacing: 0.22em;
+    line-height: 1.15;
+    white-space: nowrap;
   }
 
   .header__nav {
@@ -1068,10 +1081,6 @@ a {
 @media (max-width: 640px) {
   .logo__mark {
     width: 44px;
-  }
-
-  .logo__tag {
-    display: none;
   }
 
   .header__link {
