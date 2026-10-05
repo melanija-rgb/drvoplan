@@ -23,7 +23,9 @@ export async function inquiryStore() {
   }
 
   const { getStore } = await import("@netlify/blobs");
-  const store = getStore("upiti");
+  // Strong consistency so the admin list reflects a new, read or deleted
+  // inquiry right away instead of up to a minute later.
+  const store = getStore({ name: "upiti", consistency: "strong" });
   return {
     async setJSON(key, value) {
       await store.setJSON(key, value);
