@@ -168,7 +168,6 @@ a {
   flex: none;
 }
 
-.logo__lockup,
 .nav-toggle {
   display: none;
 }
@@ -947,15 +946,21 @@ a {
 }
 
 @media (max-width: 800px) {
-  .logo__mark,
-  .logo__text {
+  .logo {
+    gap: 0.7rem;
+  }
+
+  .logo .logo__mark {
+    width: 44px;
+    height: auto;
+  }
+
+  .logo__tag {
     display: none;
   }
 
-  .logo .logo__lockup {
-    display: block;
-    width: auto;
-    height: 54px;
+  .logo__name {
+    font-size: 0.95rem;
   }
 
   .header__nav {
