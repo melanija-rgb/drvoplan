@@ -781,7 +781,6 @@ a {
     opacity: 0.78;
   }
 
-  .header__link:hover,
   .footer a:hover,
   .about__reach a:hover {
     background-size: 100% 1px;
@@ -899,6 +898,48 @@ a {
 
   .footer__contact {
     align-items: flex-start;
+  }
+}
+
+/* Desktop header: full-bleed bar, real mark, pill links. */
+
+@media (min-width: 801px) {
+  .header__inner {
+    width: 100%;
+    padding-inline: clamp(1.5rem, 2.5vw, 2.75rem);
+  }
+
+  .logo img {
+    width: auto;
+    height: 44px;
+  }
+
+  .header__nav {
+    gap: 0.2rem;
+  }
+
+  .header__link {
+    padding: 0.42rem 0.85rem;
+    border-radius: 999px;
+    background-image: none;
+    transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
+  }
+
+  .header__link:hover,
+  .header__link:focus-visible {
+    background-color: rgba(196, 162, 122, 0.18);
+    color: #f7f1e6;
+  }
+
+  .header__link:focus-visible {
+    outline: 2px solid rgba(196, 162, 122, 0.8);
+    outline-offset: 2px;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (max-width: 800px) {
+  .header__link:hover {
+    background-size: 100% 1px;
   }
 }
 
