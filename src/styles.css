@@ -952,6 +952,10 @@ a {
     transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
   }
 
+  .about__reach {
+    margin-left: -0.85rem;
+  }
+
   a.link-pill:hover,
   a.link-pill:focus-visible {
     background-color: rgba(196, 162, 122, 0.18);
