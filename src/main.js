@@ -53,12 +53,10 @@ function paintHouse() {
       stage.style.setProperty("--rx", "0deg");
       stage.style.setProperty("--zoom", "1");
     } else {
-      const ry = -18 + p * 56;
-      const rx = 6 - p * 3;
-      const zoom = 1.18 - p * 0.42;
-      stage.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
-      stage.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
-      stage.style.setProperty("--zoom", `${zoom.toFixed(3)}`);
+      const zoom = 1 + p * 0.03;
+      stage.style.setProperty("--ry", "0deg");
+      stage.style.setProperty("--rx", "0deg");
+      stage.style.setProperty("--zoom", zoom.toFixed(3));
     }
     stage.style.setProperty("--hint", Math.max(0, 1 - p * 3.4).toFixed(3));
   }
@@ -128,32 +126,6 @@ if (reduce.matches) {
     window.scrollY > window.innerHeight && !factsInView() && !coversAControl(),
   );
 }
-
-const desktopScreen = window.matchMedia("(min-width: 801px)");
-let houseModel = null;
-let houseModelBooting = false;
-
-function bootHouseModel() {
-  if (!desktopScreen.matches) {
-    houseModel?.stop();
-    houseModel = null;
-    return;
-  }
-  if (houseModel || houseModelBooting) return;
-  houseModelBooting = true;
-  import("./house-scene.js")
-    .then((mod) => {
-      houseModelBooting = false;
-      if (!desktopScreen.matches || houseModel) return;
-      houseModel = mod.mountHouseScene(stage, { reducedMotion: reduce, desktop: desktopScreen });
-    })
-    .catch(() => {
-      houseModelBooting = false;
-    });
-}
-
-desktopScreen.addEventListener("change", bootHouseModel);
-bootHouseModel();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();

@@ -1268,24 +1268,66 @@ a {
   }
 }
 
-/* Desktop-only WebGL hero. The canvas is created in JS only at min-width 801px. */
-
-.house-webgl {
-  display: none;
-}
+/* Desktop hero photo: the whole frame, sitting between the title and the feature cards. */
 
 @media (min-width: 801px) {
-  .house-webgl {
+  .story__stage {
+    --rx: 0deg;
+    --ry: 0deg;
+    --zoom: 1;
+  }
+
+  .story__stage::before {
+    content: "";
     position: absolute;
-    inset: 0;
     z-index: 0;
-    display: block;
-    width: 100%;
-    height: 100%;
+    inset: -12%;
+    background: url("/images/dp-a-frame-45.jpg") center / cover no-repeat;
+    filter: blur(32px) brightness(0.28) saturate(0.65);
+    transform: scale(1.06);
     pointer-events: none;
   }
 
-  .story__stage.is-model .house {
-    display: none;
+  .house {
+    z-index: 2;
+    left: calc(var(--pad) + min(24rem, 34vw) + 1rem);
+    right: calc(var(--pad) + min(28rem, 36vw) + 1rem);
+    top: calc(var(--header) + 0.85rem);
+    bottom: 7.5rem;
+    display: grid;
+    place-items: center;
+    perspective: none;
+  }
+
+  .house__spin {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    transform: scale(var(--zoom));
+    transform-origin: center center;
+    border-radius: 0;
+    overflow: visible;
+    outline: none;
+    box-shadow: none;
+    will-change: transform;
+  }
+
+  .house__spin img {
+    width: min(100%, calc(568px * 1.6), calc(min(82vh, calc(606px * 1.6)) * 568 / 606));
+    height: auto;
+    aspect-ratio: 568 / 606;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 1.35rem;
+    box-shadow:
+      0 28px 70px rgba(0, 0, 0, 0.42),
+      0 0 0 1px rgba(244, 240, 232, 0.12);
+  }
+}
+
+@media (min-width: 801px) and (prefers-reduced-motion: reduce) {
+  .house__spin {
+    transform: none;
   }
 }
