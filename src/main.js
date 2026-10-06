@@ -78,8 +78,19 @@ function requestPaint() {
   });
 }
 
-toTop.addEventListener("click", () => {
+function scrollToTop() {
   window.scrollTo({ top: 0, behavior: reduce.matches ? "auto" : "smooth" });
+}
+
+toTop.addEventListener("click", scrollToTop);
+
+const logo = document.querySelector(".logo");
+logo.addEventListener("click", (event) => {
+  const url = new URL(logo.href);
+  const path = (value) => value.replace(/\/index\.html$/, "/") || "/";
+  if (url.origin !== window.location.origin || path(url.pathname) !== path(window.location.pathname)) return;
+  event.preventDefault();
+  scrollToTop();
 });
 
 const navToggle = document.querySelector(".nav-toggle");
