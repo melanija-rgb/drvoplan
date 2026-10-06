@@ -1293,6 +1293,8 @@ a {
     --dock: clamp(7.6rem, 18vh, 8.75rem);
     --split: clamp(2.5rem, 3.2vw, 4rem);
     --photo-w: calc((100% - 2 * var(--pad)) * 0.57);
+    --photo-cap: calc((100svh - var(--header) - 1.05rem) * 1.07);
+    --photo-used: min(var(--photo-w), var(--photo-cap));
     padding-bottom: 10.75rem;
   }
 
@@ -1314,7 +1316,7 @@ a {
     left: var(--pad);
     top: calc(var(--header) + 0.25rem);
     bottom: var(--dock);
-    width: calc(100% - 2 * var(--pad) - var(--photo-w) - var(--split));
+    width: calc(100% - 2 * var(--pad) - var(--photo-used) - var(--split));
     pointer-events: none;
   }
 
@@ -1401,8 +1403,7 @@ a {
     right: var(--pad);
     top: calc(var(--header) + 0.35rem);
     bottom: 0.7rem;
-    /* Stay wide, but not so wide that cover slices off the deck and steps. */
-    width: min(var(--photo-w), calc((100svh - var(--header) - 1.05rem) * 1.07));
+    width: var(--photo-used);
     perspective: none;
   }
 
