@@ -345,10 +345,6 @@ a {
   display: contents;
 }
 
-.turn {
-  display: none;
-}
-
 .panel--name,
 .panel--features,
 .panel--facts {
@@ -1278,7 +1274,7 @@ a {
   }
 }
 
-/* Desktop scroll story: quiet cards on the left, a turning photograph on the right. */
+/* Desktop scroll story: quiet cards on the left, a still photograph on the right. */
 
 @media (min-width: 801px) {
   .story__stage {
@@ -1402,105 +1398,36 @@ a {
     container-type: size;
     z-index: 1;
     left: max(42%, calc(var(--pad) + var(--copy) + 1.5rem));
-    right: clamp(1.15rem, 4vw, 5.5rem);
+    right: var(--pad);
     top: calc(var(--header) + 0.35rem);
     bottom: var(--dock);
-    display: grid;
-    place-items: center;
-    perspective: 1800px;
-    perspective-origin: 50% 46%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    perspective: none;
   }
 
   .house__spin {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-items: center;
+    position: relative;
+    width: min(100%, calc(100cqb * 568 / 584), calc(568px * 1.42));
+    aspect-ratio: 568 / 584;
+    height: auto;
+    max-height: 100%;
+    display: block;
     transform: none;
     outline: none;
-    box-shadow: none;
-  }
-
-  .house__still {
-    display: none;
-  }
-
-  .turn {
-    display: block;
-    position: relative;
-    width: min(92cqi, calc(568px * 1.45), calc(92cqb * 568 / 606));
-    aspect-ratio: 568 / 606;
-    height: auto;
-  }
-
-  .turn__shadow {
-    position: absolute;
-    left: 8%;
-    right: 8%;
-    bottom: -7%;
-    height: 16%;
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55), transparent 70%);
-    filter: blur(12px);
-    transform: translateX(calc(var(--swing, 0) * -10%)) scaleX(calc(0.72 + (1 - var(--edge, 0)) * 0.28));
-    pointer-events: none;
-    will-change: transform;
-  }
-
-  .turn__rotor {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-    transform: rotateX(var(--tilt, 0deg)) rotateY(var(--turn, 0deg)) scale(var(--turn-scale, 1));
-    will-change: transform;
-  }
-
-  .turn__face {
-    position: absolute;
-    inset: 0;
     overflow: hidden;
     border-radius: 1.15rem;
-    background: #1c1814;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    box-shadow: inset 0 0 0 1px rgba(244, 240, 232, 0.16);
+    box-shadow: 0 24px 55px rgba(0, 0, 0, 0.42);
   }
 
-  .turn__face--back {
-    transform: rotateY(180deg);
-  }
-
-  .turn__face img {
+  .house__spin img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
-    filter: brightness(calc(1 - var(--edge, 0) * 0.32));
-  }
-
-  .turn__sheen {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      108deg,
-      transparent 34%,
-      rgba(244, 240, 232, 0.28) 48%,
-      transparent 62%
-    );
-    opacity: var(--edge, 0);
-    mix-blend-mode: soft-light;
-    pointer-events: none;
-  }
-
-  .turn__edge {
-    position: absolute;
-    top: 1.5%;
-    bottom: 1.5%;
-    left: 50%;
-    width: 54px;
-    border-radius: 3px;
-    transform: translateX(-50%) rotateY(90deg);
-    background:
-      linear-gradient(90deg, #120f0c 0%, #3c342b 16%, #f3eadc 47%, #c4a27a 53%, #2c261f 84%, #120f0c 100%);
-    opacity: max(0, calc((var(--edge, 0) - 0.72) * 3.6));
+    object-position: center 48%;
+    filter: none;
   }
 }
