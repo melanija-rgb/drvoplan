@@ -1330,6 +1330,25 @@ a {
     transform: none;
   }
 
+  .story__copy .panel--name {
+    isolation: isolate;
+    background: rgba(20, 18, 16, 0.58);
+    border: 1px solid rgba(244, 240, 232, 0.14);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .story__copy .panel--name::after {
+    content: "";
+    position: absolute;
+    inset: -28px;
+    z-index: -1;
+    background: url("/images/dp-a-frame-45.jpg") center 46% / cover no-repeat;
+    filter: blur(26px) brightness(0.38) saturate(0.75);
+    pointer-events: none;
+  }
+
   .story__copy .panel--features {
     padding: 0;
     background: none;
@@ -1352,8 +1371,24 @@ a {
 
   .story__copy .features li {
     align-items: baseline;
+    position: relative;
+    isolation: isolate;
     padding: 0.48rem 0.6rem 0.42rem;
+    background: rgba(20, 18, 16, 0.62);
+    border: 1px solid rgba(244, 240, 232, 0.14);
     box-shadow: none;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .story__copy .features li::after {
+    content: "";
+    position: absolute;
+    inset: -28px;
+    z-index: -1;
+    background: url("/images/dp-a-frame-45.jpg") center 46% / cover no-repeat;
+    filter: blur(26px) brightness(0.38) saturate(0.75);
+    pointer-events: none;
   }
 
   .story__copy .features li::before {
