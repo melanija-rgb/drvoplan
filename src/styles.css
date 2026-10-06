@@ -1293,6 +1293,16 @@ a {
     --dock: clamp(7.6rem, 18vh, 8.75rem);
     --split: clamp(2.5rem, 3.2vw, 4rem);
     --photo-w: calc((100% - 2 * var(--pad)) * 0.57);
+    padding-bottom: 10.75rem;
+  }
+
+  .story__sticky {
+    overflow: visible;
+  }
+
+  .panel--facts {
+    top: calc(100% + 1.15rem);
+    bottom: auto;
   }
 
   .story__copy {
@@ -1388,10 +1398,11 @@ a {
   .house {
     z-index: 1;
     left: auto;
-    width: var(--photo-w);
     right: var(--pad);
     top: calc(var(--header) + 0.35rem);
-    bottom: calc(var(--dock) + 0.4rem);
+    bottom: 0.7rem;
+    /* Stay wide, but not so wide that cover slices off the deck and steps. */
+    width: min(var(--photo-w), calc((100svh - var(--header) - 1.05rem) * 1.07));
     perspective: none;
   }
 
@@ -1413,7 +1424,7 @@ a {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 7%;
+    object-position: center top;
     filter: none;
   }
 }
