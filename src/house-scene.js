@@ -2,8 +2,13 @@ import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 const START_YAW = 0.06;
-const TURN = (300 * Math.PI) / 180;
+const TURN = Math.PI * 2;
 const SHIFT = 0.2;
+
+function linger(t) {
+  const x = THREE.MathUtils.clamp(t, 0, 1);
+  return x * x * x * (x * (x * 6 - 15) + 10);
+}
 
 const HW = 3.22;
 const BASE = 0.5;
@@ -76,6 +81,48 @@ function boardTexture() {
       ctx.fillStyle = "#060708";
       ctx.fillRect(x + board - 2, 0, 2, 512);
     }
+  });
+}
+
+function interiorTexture() {
+  return makeCanvasTexture((ctx) => {
+    const sky = ctx.createLinearGradient(0, 0, 0, 512);
+    sky.addColorStop(0, "#3a2418");
+    sky.addColorStop(0.42, "#c4622a");
+    sky.addColorStop(0.72, "#e8873a");
+    sky.addColorStop(1, "#6a3418");
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, 512, 512);
+    const lamp = ctx.createRadialGradient(256, 150, 8, 256, 168, 150);
+    lamp.addColorStop(0, "rgba(255, 214, 150, 0.95)");
+    lamp.addColorStop(0.25, "rgba(255, 140, 50, 0.55)");
+    lamp.addColorStop(1, "rgba(255, 120, 40, 0)");
+    ctx.fillStyle = lamp;
+    ctx.fillRect(0, 0, 512, 512);
+    ctx.fillStyle = "#1a120e";
+    ctx.fillRect(118, 188, 276, 5);
+    for (const x of [132, 256, 372]) {
+      ctx.fillRect(x, 188, 4, 28);
+    }
+    ctx.fillStyle = "#2a1c16";
+    ctx.fillRect(146, 360, 220, 78);
+    ctx.fillRect(156, 332, 200, 36);
+    ctx.fillStyle = "#4a3024";
+    ctx.fillRect(70, 470, 372, 42);
+  }, 512, 512);
+}
+
+function reflectTexture() {
+  return makeCanvasTexture((ctx) => {
+    ctx.clearRect(0, 0, 512, 512);
+    const band = ctx.createLinearGradient(0, 0, 512, 512);
+    band.addColorStop(0, "rgba(255,255,255,0)");
+    band.addColorStop(0.42, "rgba(255,244,230,0.0)");
+    band.addColorStop(0.52, "rgba(255,248,240,0.55)");
+    band.addColorStop(0.62, "rgba(255,244,230,0)");
+    band.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = band;
+    ctx.fillRect(0, 0, 512, 512);
   });
 }
 
@@ -157,7 +204,13 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
   const deckMap = deckTexture();
   const boards = boardTexture();
   const groundMap = groundTexture();
-  textures.push(seam, deckMap, boards, groundMap);
+  const interiorMap = interiorTexture();
+  const reflectMap = reflectTexture();
+  interiorMap.wrapS = THREE.ClampToEdgeWrapping;
+  interiorMap.wrapT = THREE.ClampToEdgeWrapping;
+  reflectMap.wrapS = THREE.ClampToEdgeWrapping;
+  reflectMap.wrapT = THREE.ClampToEdgeWrapping;
+  textures.push(seam, deckMap, boards, groundMap, interiorMap, reflectMap);
   seam.repeat.set(2.4, 1);
   deckMap.repeat.set(3.2, 1.6);
   boards.repeat.set(1.8, 1.1);
@@ -243,21 +296,29 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
     envMapIntensity: 0.14,
   }));
   const glassMat = trackMat(new THREE.MeshStandardMaterial({
-    color: 0xffd7ae,
-    roughness: 0.08,
+    color: 0xfff4ea,
+    roughness: 0.06,
     metalness: 0,
     transparent: true,
-    opacity: 0.22,
-    envMapIntensity: 0.85,
-    emissive: 0xff6a1c,
-    emissiveIntensity: 0.42,
+    opacity: 0.14,
+    envMapIntensity: 1.15,
+    emissive: 0xffb060,
+    emissiveIntensity: 0.08,
     depthWrite: false,
   }));
-  const glowMat = trackMat(new THREE.MeshStandardMaterial({
-    color: 0xff6a22,
-    emissive: 0xff4e08,
-    emissiveIntensity: 1.7,
+  const interiorMat = trackMat(new THREE.MeshStandardMaterial({
+    map: interiorMap,
+    emissive: 0xffffff,
+    emissiveMap: interiorMap,
+    emissiveIntensity: 0.95,
     roughness: 1,
+  }));
+  const reflectMat = trackMat(new THREE.MeshBasicMaterial({
+    map: reflectMap,
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    opacity: 0.28,
   }));
   const warm = trackMat(new THREE.MeshStandardMaterial({
     color: 0xffc27a,
@@ -376,38 +437,40 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
   glassMesh.position.z = DEPTH / 2 + 0.16;
   subject.add(glassMesh);
 
-  const glowShape = tri(opening.half - 0.06, opening.base + 0.04, opening.peak - 0.28);
-  const glow = new THREE.Mesh(trackGeo(new THREE.ShapeGeometry(glowShape)), glowMat);
-  glow.position.z = 1.55;
-  subject.add(glow);
+  const interior = new THREE.Mesh(trackGeo(new THREE.ShapeGeometry(glassShape)), interiorMat);
+  interior.position.z = 0.55;
+  subject.add(interior);
+  const reflection = new THREE.Mesh(trackGeo(new THREE.ShapeGeometry(glassShape)), reflectMat);
+  reflection.position.z = DEPTH / 2 + 0.2;
+  subject.add(reflection);
 
-  function halfAt(y) {
-    const t = THREE.MathUtils.clamp((y - opening.base) / (opening.peak - opening.base), 0, 1);
-    return opening.half * (1 - t) - 0.04;
+  function slopeY(x) {
+    const span = opening.peak - opening.base;
+    return opening.base + span * (1 - Math.abs(x) / opening.half);
+  }
+  function addBar(w, h, d, x, y, z) {
+    if (w < 0.02 || h < 0.02) return;
+    add(new THREE.BoxGeometry(w, h, d), black, x, y, z);
   }
   const transomY = opening.base + (opening.peak - opening.base) * 0.55;
-  const mullionZ = DEPTH / 2 + 0.22;
-  add(new THREE.BoxGeometry(halfAt(transomY) * 2, 0.055, 0.04), black, 0, transomY, mullionZ);
+  const mullionZ = DEPTH / 2 + 0.26;
+  const doorZ = mullionZ + 0.02;
+  const deckLine = 0.52;
+  const doorHalf = 0.76;
+  const transomHalf = opening.half * (1 - 0.55) + 0.03;
+  addBar(transomHalf * 2, 0.055, 0.05, 0, transomY, mullionZ);
+  const sillW = opening.half - doorHalf;
+  const sillX = (opening.half + doorHalf) / 2;
+  addBar(sillW, 0.05, 0.05, -sillX, opening.base, mullionZ);
+  addBar(sillW, 0.05, 0.05, sillX, opening.base, mullionZ);
 
-  const jambs = [-0.72, 0.72];
-  jambs.forEach((x) => {
-    const y1 = Math.min(transomY + 0.85, opening.base + (opening.peak - opening.base) * (1 - (Math.abs(x) + 0.05) / opening.half));
-    const y0 = opening.base + 0.02;
-    add(new THREE.BoxGeometry(0.045, y1 - y0, 0.04), black, x, (y0 + y1) / 2, mullionZ);
+  [-2.02, -1.4, -doorHalf, doorHalf, 1.4, 2.02].forEach((x) => {
+    const y0 = Math.abs(x) < doorHalf + 0.01 ? deckLine : opening.base;
+    const y1 = slopeY(Math.abs(x) + 0.04) - 0.015;
+    addBar(0.05, y1 - y0, 0.05, x, (y0 + y1) / 2, mullionZ);
   });
-  [-1.55, 1.55].forEach((x) => {
-    if (Math.abs(x) > halfAt(opening.base + 0.2)) return;
-    const y0 = opening.base + 0.02;
-    const y1 = transomY;
-    add(new THREE.BoxGeometry(0.04, y1 - y0, 0.04), black, x, (y0 + y1) / 2, mullionZ);
-  });
-
-  const doorW = 1.44;
-  const doorH = transomY - opening.base - 0.06;
-  const doorY = opening.base + doorH / 2;
-  const doorZ = mullionZ + 0.015;
-  add(new THREE.BoxGeometry(doorW, 0.045, 0.04), black, 0, opening.base + 0.02, doorZ);
-  add(new THREE.BoxGeometry(0.04, doorH, 0.04), black, 0, doorY, doorZ);
+  addBar(doorHalf * 2, 0.055, 0.05, 0, deckLine + 0.02, doorZ);
+  addBar(0.045, transomY - deckLine, 0.045, 0, (deckLine + transomY) / 2, doorZ);
 
   const rear = tri(glassEdge.half - 0.04, glassEdge.base + 0.02, glassEdge.peak - 0.08);
   const rearHole = new THREE.Path();
@@ -428,7 +491,14 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
 
   add(new THREE.BoxGeometry(annexW, annexTop, annexD), cladMat, annexX, annexTop / 2, annexZ);
   add(new THREE.BoxGeometry(annexW + 0.14, 0.08, annexD + 0.12), black, annexX, annexTop + 0.02, annexZ);
-  add(new THREE.BoxGeometry(0.06, 0.08, 0.72), warm, annexX - annexW / 2 - 0.01, 1.25, annexZ + annexD / 2 - 0.55);
+  {
+    const winZ = annexZ + annexD / 2 + 0.03;
+    const winX = annexX + 0.2;
+    const winY = 1.15;
+    add(new THREE.BoxGeometry(0.7, 0.86, 0.04), black, winX, winY, winZ);
+    add(new THREE.BoxGeometry(0.52, 0.66, 0.03), warm, winX, winY, winZ + 0.02);
+    add(new THREE.BoxGeometry(0.03, 0.66, 0.02), black, winX, winY, winZ + 0.035);
+  }
 
   const deckTop = 0.52;
   const deckD = 2.05;
@@ -467,12 +537,17 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
   bollard(stepX + 1.15, stepFront + 0.15);
 
   add(new THREE.BoxGeometry(opening.half * 1.35, 0.08, DEPTH - 1.5), wood, 0.05, 0.62, 0.15);
-  add(new THREE.BoxGeometry(1.55, 0.34, 0.58), sofaMat, 0.05, 0.86, 0.55);
-  add(new THREE.BoxGeometry(1.55, 0.36, 0.12), sofaMat, 0.05, 1.16, 0.28);
-  add(new THREE.BoxGeometry(0.7, 0.06, 0.42), wood, 0.05, 0.78, 1.15);
-  add(new THREE.SphereGeometry(0.08, 16, 12), warm, 0, 3.35, 0.7);
+  add(new THREE.BoxGeometry(1.85, 0.4, 0.62), sofaMat, 0.02, 0.98, 1.25);
+  add(new THREE.BoxGeometry(1.85, 0.46, 0.16), sofaMat, 0.02, 1.32, 1.02);
+  add(new THREE.BoxGeometry(0.72, 0.06, 0.42), wood, 0.02, 0.82, 1.7);
+  const railY = opening.base + (opening.peak - opening.base) * 0.62;
+  add(new THREE.BoxGeometry(1.55, 0.04, 0.04), black, 0, railY, 1.05);
+  [-0.85, 0, 0.85].forEach((x) => {
+    add(new THREE.BoxGeometry(0.035, 0.32, 0.035), black, x, railY - 0.14, 1.05);
+  });
+  add(new THREE.SphereGeometry(0.1, 16, 12), warm, 0, 3.45, 1.15);
   const pendant = new THREE.PointLight(0xffb15a, 6, 9, 2);
-  pendant.position.set(0, 3.2, 0.7);
+  pendant.position.set(0, 3.25, 1.15);
   subject.add(pendant);
   const room = new THREE.PointLight(0xff8a3c, 3.2, 8, 2);
   room.position.set(0.1, 1.7, 0.9);
@@ -500,6 +575,18 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
   const sphereR = sphere.radius;
   const sphereY = sphere.center.y;
   const lookY = sphereY - sphereR * 0.05;
+  const localBox = fitted.clone();
+  localBox.min.sub(subject.position);
+  localBox.max.sub(subject.position);
+  const localCorners = [];
+  for (const x of [localBox.min.x, localBox.max.x]) {
+    for (const y of [localBox.min.y, localBox.max.y]) {
+      for (const z of [localBox.min.z, localBox.max.z]) {
+        localCorners.push(new THREE.Vector3(x, y, z));
+      }
+    }
+  }
+  const cornerWorld = new THREE.Vector3();
 
   let fitDist = 24;
 
@@ -527,15 +614,76 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
     return scrolled / scrollable;
   }
 
+  function readCards() {
+    const width = stage.clientWidth || window.innerWidth || 1;
+    const root = stage.parentElement;
+    if (!root) return null;
+    const items = root.querySelectorAll(".features li");
+    let cover = 0;
+    let right = width;
+    items.forEach((el) => {
+      const opacity = parseFloat(getComputedStyle(el).opacity) || 0;
+      if (opacity < 0.04) return;
+      cover = Math.max(cover, Math.min(opacity, 1));
+      right = Math.min(right, el.getBoundingClientRect().left);
+    });
+    if (cover < 0.04) return null;
+    const name = root.querySelector(".panel--name");
+    const nameOpacity = name ? parseFloat(getComputedStyle(name).opacity) || 0 : 0;
+    const left = name && nameOpacity > 0.15 ? name.getBoundingClientRect().right : width * 0.08;
+    const gapPx = right - left;
+    if (gapPx < 64) return null;
+    return { cover, center: (left + right) / 2 / width, gap: gapPx / width };
+  }
+
+  function spanAt(dist, shiftFrac, az) {
+    const y = lookY + dist * 0.04;
+    camera.position.set(Math.sin(az) * dist, y, Math.cos(az) * dist);
+    const shift = dist * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect * shiftFrac;
+    camera.lookAt(-Math.cos(az) * shift, lookY, Math.sin(az) * shift);
+    camera.updateMatrixWorld();
+    let minX = Infinity;
+    let maxX = -Infinity;
+    localCorners.forEach((corner) => {
+      cornerWorld.copy(corner).applyMatrix4(subject.matrixWorld).project(camera);
+      if (cornerWorld.x < minX) minX = cornerWorld.x;
+      if (cornerWorld.x > maxX) maxX = cornerWorld.x;
+    });
+    return { minX, maxX };
+  }
+
   function placeCamera(progress, snap) {
     const breathe = 1 + Math.sin(progress * Math.PI) * 0.016;
-    const dist = fitDist * breathe;
     const az = 0.48 + Math.sin(progress * Math.PI) * 0.035;
+    const cards = readCards();
+    let dist = fitDist * breathe;
+    let shiftFrac = SHIFT;
+    if (cards) {
+      const gapNdc = cards.gap * 2 * 0.96;
+      const centerNdc = cards.center * 2 - 1;
+      let tuckedShift = (cards.center - 0.5) * 2;
+      let lo = fitDist * 0.92;
+      let hi = fitDist * 2.15;
+      for (let i = 0; i < 8; i += 1) {
+        const mid = (lo + hi) * 0.5;
+        const span = spanAt(mid, tuckedShift, az);
+        if (span.maxX - span.minX > gapNdc) lo = mid;
+        else hi = mid;
+      }
+      let tuckedDist = hi;
+      for (let i = 0; i < 3; i += 1) {
+        const span = spanAt(tuckedDist, tuckedShift, az);
+        const mid = (span.minX + span.maxX) * 0.5;
+        tuckedShift += (centerNdc - mid) * 0.9;
+      }
+      dist = THREE.MathUtils.lerp(fitDist, tuckedDist, cards.cover) * breathe;
+      shiftFrac = THREE.MathUtils.lerp(SHIFT, tuckedShift, cards.cover);
+    }
     const y = lookY + dist * 0.04;
     desired.set(Math.sin(az) * dist, y, Math.cos(az) * dist);
     if (snap) camera.position.copy(desired);
-    else camera.position.lerp(desired, 0.08);
-    const shift = dist * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect * SHIFT;
+    else camera.position.lerp(desired, 0.1);
+    const shift = dist * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * camera.aspect * shiftFrac;
     look.set(-Math.cos(az) * shift, lookY, Math.sin(az) * shift);
     camera.lookAt(look);
   }
@@ -556,9 +704,11 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
     if (disposed || !visible) return;
     const reduced = reducedMotion.matches;
     const progress = reduced ? 0 : storyProgress();
-    const goal = START_YAW + (reduced ? 0 : progress * TURN);
+    const spun = reduced ? 0 : linger(progress);
+    const goal = START_YAW + spun * TURN;
     yaw += (goal - yaw) * (reduced ? 1 : 0.075);
     subject.rotation.y = yaw;
+    subject.updateMatrixWorld(true);
     placeCamera(progress, reduced);
     renderer.render(scene, camera);
     if (!shown) {
