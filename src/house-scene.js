@@ -3,7 +3,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 const START_YAW = 0.06;
 const TURN = (300 * Math.PI) / 180;
-const SHIFT = 0.15;
+const SHIFT = 0.2;
 
 const HW = 3.22;
 const BASE = 0.5;
@@ -33,13 +33,13 @@ function makeCanvasTexture(draw, w = 512, h = 512) {
 
 function seamTexture() {
   return makeCanvasTexture((ctx) => {
-    ctx.fillStyle = "#14161a";
+    ctx.fillStyle = "#101216";
     ctx.fillRect(0, 0, 512, 512);
-    for (let x = 16; x < 512; x += 32) {
-      ctx.fillStyle = "#0c0d10";
-      ctx.fillRect(x, 0, 3, 512);
-      ctx.fillStyle = "rgba(255,255,255,0.07)";
-      ctx.fillRect(x + 3, 0, 1, 512);
+    for (let x = 18; x < 512; x += 36) {
+      ctx.fillStyle = "#07080a";
+      ctx.fillRect(x, 0, 4, 512);
+      ctx.fillStyle = "rgba(255,255,255,0.2)";
+      ctx.fillRect(x + 4, 0, 1, 512);
     }
   });
 }
@@ -166,7 +166,7 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
   renderer.setClearColor(0x000000, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.96;
+  renderer.toneMappingExposure = 1.02;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
@@ -242,23 +242,21 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
     metalness: 0.02,
     envMapIntensity: 0.14,
   }));
-  const glassMat = trackMat(new THREE.MeshPhysicalMaterial({
-    color: 0xfff3e6,
-    roughness: 0.05,
+  const glassMat = trackMat(new THREE.MeshStandardMaterial({
+    color: 0xffd7ae,
+    roughness: 0.08,
     metalness: 0,
-    transmission: 0.72,
-    thickness: 0.08,
-    ior: 1.5,
     transparent: true,
-    opacity: 1,
-    envMapIntensity: 1.15,
-    emissive: 0xff9a42,
-    emissiveIntensity: 0.22,
+    opacity: 0.22,
+    envMapIntensity: 0.85,
+    emissive: 0xff6a1c,
+    emissiveIntensity: 0.42,
+    depthWrite: false,
   }));
   const glowMat = trackMat(new THREE.MeshStandardMaterial({
-    color: 0xffb068,
-    emissive: 0xff7a2e,
-    emissiveIntensity: 0.85,
+    color: 0xff6a22,
+    emissive: 0xff4e08,
+    emissiveIntensity: 1.7,
     roughness: 1,
   }));
   const warm = trackMat(new THREE.MeshStandardMaterial({
@@ -300,9 +298,7 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
     return mesh;
   }
 
-  function addSlope(x0, y0, x1, y1) {
-    const z0 = -DEPTH / 2 - 0.12;
-    const z1 = DEPTH / 2 + 0.2;
+  function addSlope(x0, y0, x1, y1, z0 = -DEPTH / 2 - 0.12, z1 = DEPTH / 2 + 0.2) {
     const geo = trackGeo(new THREE.BufferGeometry());
     geo.setAttribute("position", new THREE.Float32BufferAttribute([
       x0, y0, z0,
@@ -332,7 +328,11 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
   const annexX = annexInner - annexW / 2;
 
   addSlope(0, PEAK + 0.04, HW + 0.16, BASE - 0.02);
-  addSlope(0, PEAK + 0.04, annexInner + 0.02, annexTop + 0.06);
+  const annexFrontZ = annexZ + annexD / 2;
+  const annexBackZ = annexZ - annexD / 2;
+  addSlope(0, PEAK + 0.04, -HW - 0.04, BASE - 0.02, -DEPTH / 2 - 0.12, annexBackZ);
+  addSlope(0, PEAK + 0.04, annexInner + 0.02, annexTop + 0.06, annexBackZ, annexFrontZ);
+  addSlope(0, PEAK + 0.04, -HW - 0.04, BASE - 0.02, annexFrontZ, DEPTH / 2 + 0.2);
   add(new THREE.BoxGeometry(0.14, 0.1, DEPTH + 0.55), black, 0, PEAK + 0.08, 0.04);
 
   const woodBand = insetTriangle(HW, BASE, PEAK, 0.2);
@@ -378,7 +378,7 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
 
   const glowShape = tri(opening.half - 0.06, opening.base + 0.04, opening.peak - 0.28);
   const glow = new THREE.Mesh(trackGeo(new THREE.ShapeGeometry(glowShape)), glowMat);
-  glow.position.z = 0.85;
+  glow.position.z = 1.55;
   subject.add(glow);
 
   function halfAt(y) {
@@ -431,7 +431,7 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
   add(new THREE.BoxGeometry(0.06, 0.08, 0.72), warm, annexX - annexW / 2 - 0.01, 1.25, annexZ + annexD / 2 - 0.55);
 
   const deckTop = 0.52;
-  const deckD = 2.7;
+  const deckD = 2.05;
   const deckFront = DEPTH / 2 - 0.05;
   const deckX0 = annexX - annexW / 2 + 0.08;
   const deckX1 = HW + 0.05;
@@ -479,13 +479,13 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
   subject.add(room);
 
   const ao = new THREE.Mesh(
-    trackGeo(new THREE.CircleGeometry(6.2, 40)),
+    trackGeo(new THREE.CircleGeometry(5.4, 40)),
     trackMat(new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.42, depthWrite: false })),
   );
   ao.rotation.x = -Math.PI / 2;
   ao.position.y = 0.012;
   scene.add(ao);
-  const ground = new THREE.Mesh(trackGeo(new THREE.CircleGeometry(16, 48)), groundMat);
+  const ground = new THREE.Mesh(trackGeo(new THREE.CircleGeometry(9.2, 48)), groundMat);
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   scene.add(ground);
@@ -510,7 +510,7 @@ export function mountHouseScene(stage, { reducedMotion, desktop }) {
     const bottom = lookY - (sphereY - sphereR);
     const distV = Math.max(top, bottom) / Math.tan(vFov / 2);
     const distH = sphereR / (Math.tan(hFov / 2) * (1 - SHIFT));
-    fitDist = Math.max(distV, distH) * 1.05;
+    fitDist = Math.max(distV, distH) * 0.84;
   }
 
   let yaw = START_YAW;
