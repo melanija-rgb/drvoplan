@@ -67,30 +67,38 @@ function paintHouse() {
   header.classList.toggle("is-scrolled", window.scrollY > 8);
 
   const p = storyProgress();
+  const narrow = narrowScreen.matches;
+  const mobileReduce = reduce.matches && narrow;
 
-  if (reduce.matches || stage.querySelector("spline-viewer")) {
+  if (stage.querySelector("spline-viewer") || mobileReduce) {
     stage.style.removeProperty("--ry");
     stage.style.removeProperty("--rx");
     stage.style.removeProperty("--zoom");
     stage.style.removeProperty("--hint");
+    targetTurn = 0;
+    targetTilt = 0;
+    targetNudge = 0;
+  } else if (narrow) {
+    stage.style.setProperty("--ry", "0deg");
+    stage.style.setProperty("--rx", "0deg");
+    stage.style.setProperty("--zoom", "1");
+    targetTurn = 0;
+    targetTilt = 0;
+    targetNudge = 0;
+    stage.style.setProperty("--hint", Math.max(0, 1 - p * 3.4).toFixed(3));
   } else {
-    if (narrowScreen.matches) {
-      stage.style.setProperty("--ry", "0deg");
-      stage.style.setProperty("--rx", "0deg");
-      stage.style.setProperty("--zoom", "1");
-      targetTurn = 0;
+    stage.style.setProperty("--ry", "0deg");
+    stage.style.setProperty("--rx", "0deg");
+    stage.style.setProperty("--zoom", "1");
+    targetTurn = rotationFor(p);
+    if (reduce.matches) {
       targetTilt = 0;
       targetNudge = 0;
-    } else {
-      stage.style.setProperty("--ry", "0deg");
-      stage.style.setProperty("--rx", "0deg");
-      stage.style.setProperty("--zoom", "1");
-      targetTurn = rotationFor(p);
     }
     stage.style.setProperty("--hint", Math.max(0, 1 - p * 3.4).toFixed(3));
   }
 
-  if (!reduce.matches) {
+  if (!mobileReduce) {
     reveals.forEach((el) => {
       el.classList.toggle("is-on", p >= Number(el.dataset.at));
     });
@@ -158,20 +166,29 @@ function clearTurn() {
   house.style.removeProperty("--swing");
 }
 
+function applyTurn(shown) {
+  const edge = Math.abs(Math.sin((shown * Math.PI) / 180));
+  const scale = 1 - edge * 0.06;
+  house.style.setProperty("--turn", `${shown.toFixed(2)}deg`);
+  house.style.setProperty("--tilt", `${currentTilt.toFixed(2)}deg`);
+  house.style.setProperty("--turn-scale", scale.toFixed(3));
+  house.style.setProperty("--edge", edge.toFixed(3));
+  house.style.setProperty("--swing", Math.sin((shown * Math.PI) / 180).toFixed(3));
+}
+
 function tickTurn() {
-  const desktopMotion = !narrowScreen.matches && !reduce.matches && !stage.querySelector("spline-viewer");
-  if (desktopMotion) {
-    currentTurn += (targetTurn - currentTurn) * 0.14;
-    currentTilt += (targetTilt - currentTilt) * 0.08;
-    currentNudge += (targetNudge - currentNudge) * 0.08;
-    const shown = currentTurn + currentNudge;
-    const edge = Math.abs(Math.sin((shown * Math.PI) / 180));
-    const scale = 1 - edge * 0.06;
-    house.style.setProperty("--turn", `${shown.toFixed(2)}deg`);
-    house.style.setProperty("--tilt", `${currentTilt.toFixed(2)}deg`);
-    house.style.setProperty("--turn-scale", scale.toFixed(3));
-    house.style.setProperty("--edge", edge.toFixed(3));
-    house.style.setProperty("--swing", Math.sin((shown * Math.PI) / 180).toFixed(3));
+  const desktop = !narrowScreen.matches && !stage.querySelector("spline-viewer");
+  if (desktop) {
+    if (reduce.matches) {
+      currentTurn = targetTurn;
+      currentTilt = 0;
+      currentNudge = 0;
+    } else {
+      currentTurn += (targetTurn - currentTurn) * 0.14;
+      currentTilt += (targetTilt - currentTilt) * 0.08;
+      currentNudge += (targetNudge - currentNudge) * 0.08;
+    }
+    applyTurn(currentTurn + currentNudge);
   } else if (house.style.getPropertyValue("--turn")) {
     clearTurn();
   }
@@ -205,7 +222,9 @@ paintHouse();
 requestAnimationFrame(tickTurn);
 
 if (reduce.matches) {
-  reveals.forEach((el) => el.classList.add("is-on"));
+  if (narrowScreen.matches) {
+    reveals.forEach((el) => el.classList.add("is-on"));
+  }
   toTop.classList.toggle(
     "is-on",
     window.scrollY > window.innerHeight && !factsInView() && !coversAControl(),

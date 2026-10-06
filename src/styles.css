@@ -1228,6 +1228,12 @@ a {
     transition: none !important;
   }
 
+  .inquiry {
+    padding-top: clamp(3rem, 8vh, 5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) and (max-width: 800px) {
   .story {
     height: auto;
   }
@@ -1270,34 +1276,11 @@ a {
   .scroll-hint {
     display: none;
   }
-
-  .inquiry {
-    padding-top: clamp(3rem, 8vh, 5rem);
-  }
 }
 
 /* Desktop scroll story: quiet cards on the left, a turning photograph on the right. */
 
-@media (min-width: 801px) and (prefers-reduced-motion: reduce) {
-  .house__spin {
-    transform: none;
-  }
-
-  .house__still {
-    width: auto;
-    height: auto;
-    max-width: min(100%, calc(568px * 1.45));
-    max-height: min(72vh, calc(606px * 1.45));
-    object-fit: contain;
-    object-position: center;
-  }
-
-  .turn {
-    display: none;
-  }
-}
-
-@media (min-width: 801px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 801px) {
   .story__stage {
     background:
       radial-gradient(ellipse 42% 36% at 68% 48%, rgba(196, 162, 122, 0.08), transparent 70%),
@@ -1310,16 +1293,21 @@ a {
       linear-gradient(180deg, rgba(20, 18, 16, 0.4), transparent 18% 78%, rgba(20, 18, 16, 0.55));
   }
 
+  .story {
+    --copy: min(24rem, 36vw);
+    --dock: clamp(7.6rem, 18vh, 8.75rem);
+  }
+
   .story__copy {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 1.15rem;
+    justify-content: safe center;
+    gap: clamp(0.35rem, 1.5vh, 1.15rem);
     position: absolute;
     left: var(--pad);
-    top: calc(var(--header) + 0.4rem);
-    bottom: 8.75rem;
-    width: min(26rem, 32vw);
+    top: calc(var(--header) + 0.25rem);
+    bottom: var(--dock);
+    width: var(--copy);
     pointer-events: none;
   }
 
@@ -1339,13 +1327,17 @@ a {
     -webkit-backdrop-filter: none;
   }
 
+  .story__copy .eyebrow {
+    margin-bottom: clamp(0.2rem, 0.6vh, 0.7rem);
+  }
+
   .story__copy .panel--name h1 {
-    font-size: clamp(2.5rem, 3.5vw, 3.8rem);
+    font-size: clamp(1.55rem, min(3.5vw, 5.4vh), 3.8rem);
   }
 
   .story__copy .tagline {
-    margin-top: 0.45rem;
-    font-size: clamp(1.45rem, 2vw, 1.9rem);
+    margin-top: clamp(0.15rem, 0.5vh, 0.45rem);
+    font-size: clamp(1.05rem, min(2vw, 3vh), 1.9rem);
   }
 
   .story__copy .features {
@@ -1353,10 +1345,10 @@ a {
   }
 
   .story__copy .features li {
-    grid-template-columns: 3.6rem minmax(0, 1fr);
-    column-gap: 0.7rem;
+    grid-template-columns: clamp(2.15rem, 4.5vh, 3.6rem) minmax(0, 1fr);
+    column-gap: 0.65rem;
     align-items: start;
-    padding: 0.72rem 0 0.62rem;
+    padding: clamp(0.28rem, 1.05vh, 0.72rem) 0 clamp(0.18rem, 0.8vh, 0.62rem);
     background: none;
     border: 0;
     border-top: 1px solid rgba(244, 240, 232, 0.12);
@@ -1369,21 +1361,21 @@ a {
     font-family: var(--sans);
     font-style: normal;
     font-weight: 400;
-    font-size: clamp(1.7rem, 2.2vw, 2.25rem);
+    font-size: clamp(1.15rem, min(2.2vw, 3.3vh), 2.25rem);
     letter-spacing: -0.05em;
     line-height: 0.9;
     color: rgba(196, 162, 122, 0.9);
   }
 
   .story__copy .features__title {
-    font-size: 1rem;
+    font-size: clamp(0.84rem, 1.7vh, 1rem);
     letter-spacing: -0.02em;
   }
 
   .story__copy .features li p:last-child {
-    margin-top: 0.12rem;
-    font-size: 0.9rem;
-    line-height: 1.4;
+    margin-top: 0.08rem;
+    font-size: clamp(0.72rem, 1.45vh, 0.9rem);
+    line-height: 1.35;
   }
 
   .js .story__copy .reveal {
@@ -1409,10 +1401,10 @@ a {
   .house {
     container-type: size;
     z-index: 1;
-    left: max(40%, calc(var(--pad) + min(26rem, 32vw) + 3rem));
-    right: clamp(2.25rem, 5vw, 5.5rem);
-    top: calc(var(--header) + 0.6rem);
-    bottom: 8.6rem;
+    left: max(42%, calc(var(--pad) + var(--copy) + 1.5rem));
+    right: clamp(1.15rem, 4vw, 5.5rem);
+    top: calc(var(--header) + 0.35rem);
+    bottom: var(--dock);
     display: grid;
     place-items: center;
     perspective: 1800px;
