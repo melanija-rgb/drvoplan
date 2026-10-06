@@ -8,6 +8,9 @@ const toTop = document.querySelector(".to-top");
 const facts = document.querySelector(".facts");
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 const narrowScreen = window.matchMedia("(max-width: 800px)");
+const nameCard = document.querySelector(".panel--name");
+const featureList = document.querySelector(".panel--features");
+const house = document.querySelector(".house");
 
 function storyProgress() {
   const scrollable = story.offsetHeight - window.innerHeight;
@@ -114,10 +117,68 @@ document.addEventListener("keydown", (event) => {
 
 window.matchMedia("(max-width: 800px)").addEventListener("change", () => setNav(false));
 
+const nativePhoto = { w: 568, h: 606 };
+
+function alignDesktopPhoto() {
+  if (narrowScreen.matches || reduce.matches) {
+    stage.style.removeProperty("--photo-top");
+    stage.style.removeProperty("--photo-height");
+    stage.style.removeProperty("--photo-w");
+    stage.style.removeProperty("--photo-h");
+    return;
+  }
+
+  const stageRect = stage.getBoundingClientRect();
+  const nameRect = nameCard.getBoundingClientRect();
+  const featureRect = featureList.getBoundingClientRect();
+  const columnWidth = house.getBoundingClientRect().width;
+  const textTop = nameRect.top - stageRect.top;
+  const textHeight = featureRect.bottom - nameRect.top;
+  const textCenter = textTop + textHeight / 2;
+  const ratio = nativePhoto.w / nativePhoto.h;
+  const headerHeight = header.getBoundingClientRect().height;
+  const factsTop = facts.offsetTop;
+  const minTop = headerHeight + 18;
+  const maxBottom = factsTop - 28;
+  const maxHeight = Math.min((textCenter - minTop) * 2, (maxBottom - textCenter) * 2, nativePhoto.h * 1.9) / 1.03;
+  const maxWidth = Math.min(columnWidth, nativePhoto.w * 1.9) / 1.03;
+
+  let photoHeight = Math.min(textHeight, maxHeight);
+  let photoWidth = photoHeight * ratio;
+
+  if (columnWidth - photoWidth > 220 && maxHeight > photoHeight) {
+    photoWidth = Math.min(maxWidth, columnWidth);
+    photoHeight = photoWidth / ratio;
+    if (photoHeight > maxHeight) {
+      photoHeight = maxHeight;
+      photoWidth = photoHeight * ratio;
+    }
+  }
+
+  if (photoWidth > maxWidth) {
+    photoWidth = maxWidth;
+    photoHeight = photoWidth / ratio;
+  }
+
+  stage.style.setProperty("--photo-top", `${textTop}px`);
+  stage.style.setProperty("--photo-height", `${textHeight}px`);
+  stage.style.setProperty("--photo-w", `${photoWidth}px`);
+  stage.style.setProperty("--photo-h", `${photoHeight}px`);
+}
+
 window.addEventListener("scroll", requestPaint, { passive: true });
-window.addEventListener("resize", requestPaint);
-reduce.addEventListener("change", requestPaint);
+window.addEventListener("resize", () => {
+  alignDesktopPhoto();
+  requestPaint();
+});
+reduce.addEventListener("change", () => {
+  alignDesktopPhoto();
+  requestPaint();
+});
+narrowScreen.addEventListener("change", alignDesktopPhoto);
 paintHouse();
+alignDesktopPhoto();
+document.fonts.ready.then(alignDesktopPhoto);
 
 if (reduce.matches) {
   reveals.forEach((el) => el.classList.add("is-on"));
