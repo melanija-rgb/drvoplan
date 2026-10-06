@@ -1330,6 +1330,14 @@ a {
     transform: none;
   }
 
+  .story__copy .panel--name {
+    background: linear-gradient(180deg, rgba(58, 40, 28, 0.84), rgba(40, 28, 20, 0.92));
+    border: 1px solid rgba(244, 240, 232, 0.14);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
   .story__copy .panel--features {
     padding: 0;
     background: none;
@@ -1353,7 +1361,11 @@ a {
   .story__copy .features li {
     align-items: baseline;
     padding: 0.48rem 0.6rem 0.42rem;
-    box-shadow: none;
+    background: linear-gradient(180deg, rgba(58, 40, 28, 0.84), rgba(40, 28, 20, 0.92));
+    border: 1px solid rgba(244, 240, 232, 0.14);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
   .story__copy .features li::before {
