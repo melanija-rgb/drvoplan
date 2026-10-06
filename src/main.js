@@ -7,6 +7,7 @@ const status = form.querySelector(".form__status");
 const toTop = document.querySelector(".to-top");
 const facts = document.querySelector(".facts");
 const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+const narrowScreen = window.matchMedia("(max-width: 800px)");
 
 function storyProgress() {
   const scrollable = story.offsetHeight - window.innerHeight;
@@ -47,13 +48,18 @@ function paintHouse() {
     stage.style.removeProperty("--zoom");
     stage.style.removeProperty("--hint");
   } else {
-    const narrow = window.innerWidth < 800;
-    const ry = narrow ? -10 + p * 36 : -18 + p * 56;
-    const rx = narrow ? 3 - p * 1 : 6 - p * 3;
-    const zoom = window.innerWidth <= 800 ? 1 - p * 0.08 : 1.18 - p * 0.42;
-    stage.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
-    stage.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
-    stage.style.setProperty("--zoom", `${zoom.toFixed(3)}`);
+    if (narrowScreen.matches) {
+      stage.style.setProperty("--ry", "0deg");
+      stage.style.setProperty("--rx", "0deg");
+      stage.style.setProperty("--zoom", "1");
+    } else {
+      const ry = -18 + p * 56;
+      const rx = 6 - p * 3;
+      const zoom = 1.18 - p * 0.42;
+      stage.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
+      stage.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
+      stage.style.setProperty("--zoom", `${zoom.toFixed(3)}`);
+    }
     stage.style.setProperty("--hint", Math.max(0, 1 - p * 3.4).toFixed(3));
   }
 

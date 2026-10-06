@@ -944,10 +944,6 @@ a {
     font-size: 0.58rem;
   }
 
-  .story__stage {
-    --zoom: 1;
-  }
-
   .story__stage::before {
     content: "";
     position: absolute;
@@ -962,12 +958,17 @@ a {
     z-index: 1;
     display: grid;
     place-items: center;
+    perspective: none;
   }
 
   .house__spin {
-    width: min(calc(100% - 1.75rem), 568px, calc(64svh * 568 / 606));
+    width: min(calc(100% - 32px), calc(100svh * 568 / 606));
     height: auto;
     min-width: 0;
+    max-width: calc(100% - 32px);
+    justify-self: center;
+    transform: none;
+    will-change: auto;
   }
 
   .house__spin img {
