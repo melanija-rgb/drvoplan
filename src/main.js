@@ -129,6 +129,32 @@ if (reduce.matches) {
   );
 }
 
+const desktopScreen = window.matchMedia("(min-width: 801px)");
+let houseModel = null;
+let houseModelBooting = false;
+
+function bootHouseModel() {
+  if (!desktopScreen.matches) {
+    houseModel?.stop();
+    houseModel = null;
+    return;
+  }
+  if (houseModel || houseModelBooting) return;
+  houseModelBooting = true;
+  import("./house-scene.js")
+    .then((mod) => {
+      houseModelBooting = false;
+      if (!desktopScreen.matches || houseModel) return;
+      houseModel = mod.mountHouseScene(stage, { reducedMotion: reduce, desktop: desktopScreen });
+    })
+    .catch(() => {
+      houseModelBooting = false;
+    });
+}
+
+desktopScreen.addEventListener("change", bootHouseModel);
+bootHouseModel();
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!form.checkValidity()) {
