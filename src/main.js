@@ -50,7 +50,7 @@ function paintHouse() {
     const narrow = window.innerWidth < 800;
     const ry = narrow ? -10 + p * 36 : -18 + p * 56;
     const rx = narrow ? 3 - p * 1 : 6 - p * 3;
-    const zoom = narrow ? 1.2 - p * 0.28 : 1.18 - p * 0.42;
+    const zoom = window.innerWidth <= 800 ? 1 - p * 0.08 : 1.18 - p * 0.42;
     stage.style.setProperty("--ry", `${ry.toFixed(2)}deg`);
     stage.style.setProperty("--rx", `${rx.toFixed(2)}deg`);
     stage.style.setProperty("--zoom", `${zoom.toFixed(3)}`);

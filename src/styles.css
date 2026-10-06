@@ -943,6 +943,39 @@ a {
     letter-spacing: 0.08em;
     font-size: 0.58rem;
   }
+
+  .story__stage {
+    --zoom: 1;
+  }
+
+  .story__stage::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    inset: -18%;
+    background: url("/images/dp-a-frame-45.jpg") center 46% / cover no-repeat;
+    filter: blur(26px) brightness(0.38) saturate(0.75);
+    pointer-events: none;
+  }
+
+  .house {
+    z-index: 1;
+    display: grid;
+    place-items: center;
+  }
+
+  .house__spin {
+    width: min(calc(100% - 1.75rem), 568px, calc(64svh * 568 / 606));
+    height: auto;
+    min-width: 0;
+  }
+
+  .house__spin img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+  }
 }
 
 @media (max-width: 800px) {
