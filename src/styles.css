@@ -542,6 +542,21 @@ a {
   color: rgba(244, 240, 232, 0.72);
 }
 
+.facts > div:nth-child(n + 2) .facts__copy strong {
+  display: inline;
+}
+
+.facts > div:nth-child(n + 2) .facts__copy > span {
+  display: inline;
+  margin-top: 0;
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  text-transform: lowercase;
+  color: inherit;
+}
+
 /* O nama */
 
 .about {
