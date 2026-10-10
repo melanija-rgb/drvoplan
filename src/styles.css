@@ -542,11 +542,11 @@ a {
   color: rgba(244, 240, 232, 0.72);
 }
 
-.facts > div:nth-child(n + 2) .facts__copy strong {
+.facts > div .facts__copy strong {
   display: inline;
 }
 
-.facts > div:nth-child(n + 2) .facts__copy > span {
+.facts > div .facts__copy > span {
   display: inline;
   margin-top: 0;
   font-size: clamp(1.2rem, 2vw, 1.7rem);
@@ -986,11 +986,11 @@ a {
     font-size: 0.58rem;
   }
 
-  .facts > div:nth-child(n + 2) .facts__copy strong {
+  .facts > div .facts__copy strong {
     display: inline;
   }
 
-  .facts > div:nth-child(n + 2) .facts__copy > span {
+  .facts > div .facts__copy > span {
     display: inline;
     margin-top: 0;
     font-size: 0.92rem;
@@ -1236,7 +1236,7 @@ a {
     letter-spacing: 0.015em;
   }
 
-  .facts > div:nth-child(n + 2) .facts__copy > span {
+  .facts > div .facts__copy > span {
     font-size: clamp(0.78rem, 3.6vw, 0.9rem);
     letter-spacing: -0.045em;
   }
