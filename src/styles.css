@@ -971,6 +971,21 @@ a {
     font-size: 0.58rem;
   }
 
+  .facts > div:nth-child(n + 2) .facts__copy strong {
+    display: inline;
+  }
+
+  .facts > div:nth-child(n + 2) .facts__copy > span {
+    display: inline;
+    margin-top: 0;
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    text-transform: lowercase;
+    color: inherit;
+  }
+
   .story__stage::before {
     content: "";
     position: absolute;
@@ -1204,6 +1219,11 @@ a {
   .facts__copy > span {
     font-size: clamp(0.5rem, 2.35vw, 0.56rem);
     letter-spacing: 0.015em;
+  }
+
+  .facts > div:nth-child(n + 2) .facts__copy > span {
+    font-size: clamp(0.78rem, 3.6vw, 0.9rem);
+    letter-spacing: -0.045em;
   }
 }
 
